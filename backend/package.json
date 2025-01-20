@@ -1,0 +1,25 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "description": "An app through which people can chat :D",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChirayuRai/ChatApp.git"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Chirayu Rai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChirayuRai/ChatApp/issues"
+  },
+  "homepage": "https://github.com/ChirayuRai/ChatApp#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
