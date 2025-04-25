@@ -10,16 +10,25 @@ const io = new Server(server, {
     cors: ['http://localhost:5173']
 })
 
+const messages = [] // acts like database
 
 io.on('connection', (socket) => {
     console.log("A client has connected!");
-    socket.on('chat message', (message) => {
+    // Want some kind of traditional API endpoint thing where the 
+    // client just looks for all the sent messages upon first connection.
+    // As long as this server session is running, all these messages will be stored
+    // Else, it'll be deleted. Kinda spooky innit bruv
+    socket.on('get_messages', () => {
+        io.emit('sent_messages', messages)
+    })
+    socket.on('chat_message', (message) => {
         console.log("Got chat message:", message);
 
         // NOTE: Sends out message to everyone but original sender
         //socket.broadcast.emit(message)
 
-        io.emit('chat message', message)
+        messages.push(message)
+        io.emit('chat_message', message)
     })
     socket.on('disconnect', () => {
         console.log('A client has disconnected :(');

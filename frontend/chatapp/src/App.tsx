@@ -1,32 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { socket } from './socket';
+import { SendingForm } from './components/SendingForm.tsx';
+import Chat from './components/Chat.tsx'
 
 const App: React.FC = () => {
     const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
-    const [eventQueue, setEventQueue] = useState<any[]>([]); // Adjust type based on actual event data
+    const [messageQueue, setMessageQueue] = useState<any[]>([]); // TODO: Adjust type based on actual event data
 
     useEffect(() => {
         const onConnect = () => setIsConnected(true);
         const onDisconnect = () => setIsConnected(false);
-        const onEventFound = (value: any) => { // Change `any` to a more specific type if possible
-            setEventQueue(previous => [...previous, value]);
+        const onMessageFound = (msg: string) => { 
+            setMessageQueue(previous => [...previous, msg]);
+            console.log(msg)
         };
 
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
-        socket.on('foo', onEventFound);
+        socket.on('chat_message', onMessageFound);
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
-            socket.off('foo', onEventFound);
+            socket.off('foo', onMessageFound);
         };
     }, []);
 
     return (
         <>
+            <Chat messageQueue={messageQueue}/>
             <p>Current connection state: {isConnected ? 'Connected' : 'Disconnected'}</p>
-            <p>Hello World!</p>
+            <SendingForm/>
+
         </>
     );
 };
